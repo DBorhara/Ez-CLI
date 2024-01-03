@@ -6,14 +6,19 @@ use std::process::Command;
 const GIT: &str = "git";
 
 fn main() -> Result<(), Box<dyn Error>> {
-    run_git_commands()?;
+    let args: Vec<String> = env::args().collect();
+
+    let remote = args.get(1).unwrap_or(&"origin".to_string()).clone();
+    let branch = args.get(2).unwrap_or(&current_branch()?).clone();
+
+    run_git_commands(&remote, &branch)?;
     Ok(())
 }
 
-fn run_git_commands() -> Result<(), Box<dyn Error>> {
+fn run_git_commands(remote: &str, branch: &str) -> Result<(), Box<dyn Error>> {
     git_command(&["add", "-A"])?;
     git_command(&["commit", "-m", &message_input()?])?;
-    git_command(&["push", "origin", &current_branch()?])?;
+    git_command(&["push", remote, branch])?;
 
     println!("Successfully added, committed, and pushed all changes.");
     Ok(())
