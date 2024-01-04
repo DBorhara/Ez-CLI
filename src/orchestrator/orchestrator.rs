@@ -1,9 +1,10 @@
+use std::error::Error;
 use std::fs;
 use std::io::{self, Read};
 
 use crate::orchestrator::git_orchestrator::git_orchestrator;
 
-pub fn orchestrator(selected_input: usize) -> io::Result<()> {
+pub fn orchestrator(selected_input: usize) -> Result<(), Box<dyn Error>> {
     println!("Selected Input: {}", selected_input);
     match selected_input {
         1 => {
@@ -19,12 +20,11 @@ pub fn orchestrator(selected_input: usize) -> io::Result<()> {
                 .expect("Failed to read line");
             println!("Selected Number:{}", input_number);
             let input_number: usize = input_number.trim().parse().unwrap();
-            git_orchestrator(input_number);
-            return Ok(());
+            git_orchestrator(input_number)?;
         }
         _ => {
             // Temp error handling
-            println!("Error: Number doesn't exit");
+            return Err("Option does not exist".to_string().into());
         }
     }
     Ok(())

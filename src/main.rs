@@ -2,10 +2,11 @@ mod git;
 use crate::git::git_command;
 mod orchestrator;
 use crate::orchestrator::orchestrator::orchestrator;
+use std::error::Error;
 use std::fs;
 use std::io::{self, Read};
 
-fn main() -> io::Result<()> {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut file = fs::File::open("src/intro.txt")?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
