@@ -1,0 +1,3 @@
+Please select a quick git command:
+
+1. Add, Commit, and Push to Remote of your choice.
