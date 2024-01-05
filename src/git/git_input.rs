@@ -11,7 +11,7 @@ pub fn git_input(command: &str) -> Result<String, Box<dyn Error>> {
                 Ok(args[1].clone())
             } else {
                 println!("Enter commit message: ");
-                get_user_input()
+                get_user_input(Some("Auto Commit: Regular backup/checkpoint."))
             }
         }
         "remote" => {
@@ -19,7 +19,7 @@ pub fn git_input(command: &str) -> Result<String, Box<dyn Error>> {
                 Ok(args[1].clone())
             } else {
                 println!("Enter remote name: ");
-                get_user_input()
+                get_user_input(Some("origin"))
             }
         }
         "branch" => {
@@ -27,7 +27,7 @@ pub fn git_input(command: &str) -> Result<String, Box<dyn Error>> {
                 Ok(args[1].clone())
             } else {
                 println!("Enter branch name: ");
-                get_user_input()
+                get_user_input(Some("main"))
             }
         }
         _ => {
@@ -37,9 +37,23 @@ pub fn git_input(command: &str) -> Result<String, Box<dyn Error>> {
     }
 }
 
-fn get_user_input() -> Result<String, Box<dyn Error>> {
+fn get_user_input(default: Option<&str>) -> Result<String, Box<dyn Error>> {
+    if let Some(default_value) = default {
+        println!(
+            "Press Enter for default value ('{}'), or enter new value:",
+            default_value
+        );
+    } else {
+        println!("Enter value:");
+    }
+
     io::stdout().flush()?;
     let mut input = String::new();
     io::stdin().read_line(&mut input)?;
-    Ok(input.trim().to_string())
+
+    if input.trim().is_empty() {
+        Ok(default.unwrap_or("").to_string())
+    } else {
+        Ok(input.trim().to_string())
+    }
 }
