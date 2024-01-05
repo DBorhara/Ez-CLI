@@ -2,6 +2,7 @@ use std::error::Error;
 use std::fs;
 use std::io::{self, Read};
 
+use crate::orchestrator::config_orchestrator::config_orchestrator;
 use crate::orchestrator::git_orchestrator::git_orchestrator;
 
 pub fn orchestrator(selected_input: usize) -> Result<(), Box<dyn Error>> {
@@ -18,9 +19,27 @@ pub fn orchestrator(selected_input: usize) -> Result<(), Box<dyn Error>> {
             io::stdin()
                 .read_line(&mut input_number)
                 .expect("Failed to read line");
-            println!("Selected Number:{}", input_number);
+            println!("Selected Number: {}", input_number);
             let input_number: usize = input_number.trim().parse().unwrap();
             git_orchestrator(input_number)?;
+        }
+        2 => {
+            let mut file = fs::File::open("src/config_select.txt")?;
+            let mut contents = String::new();
+            file.read_to_string(&mut contents)?;
+            println!("{}", &contents);
+
+            let mut input_number = String::new();
+
+            io::stdin()
+                .read_line(&mut input_number)
+                .expect("Failed to read line");
+
+            println!("Selected Number: {}", input_number);
+
+            let input_number: usize = input_number.trim().parse().unwrap();
+
+            config_orchestrator(input_number)?
         }
         _ => {
             // Temp error handling

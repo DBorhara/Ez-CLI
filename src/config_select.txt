@@ -1,0 +1,7 @@
+Please select a configuration to open:
+
+1. Neovim
+
+2. Tmux
+
+3. Zsh

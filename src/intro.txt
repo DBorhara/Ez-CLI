@@ -3,3 +3,5 @@ Welcome to Ez-CLI
 Please select a service you would like to access:
 
 1. Git Commands
+
+2. Configurations
