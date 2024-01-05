@@ -1,11 +1,12 @@
-use std::{error::Error, process::Command};
+use std::{env, error::Error, process::Command};
 
 const NVIM: &str = "nvim";
 
 pub fn open_zsh_config() -> Result<(), Box<dyn Error>> {
-    // Not opening zsh file correctly
-    // TODO: Figure out why nvim isn't opening it
-    let zsh_command = Command::new(NVIM).arg("~/.zshrc").status()?;
+    let home_dir = env::var("HOME")?;
+
+    let zshrc_path = format!("{}/.zshrc", home_dir);
+    let zsh_command = Command::new(NVIM).arg(&zshrc_path).status()?;
 
     if !zsh_command.success() {
         Err(format!("Error opening your zsh config.").into())
